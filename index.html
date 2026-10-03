@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Temperaturas</title>
+</head>
+
+<body>
+
+    <table border="1">
+
+        
+        <tr>
+            <td colspan="3">
+                <h2>Registro de Temperaturas Semanales</h2>
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td>Temperatura</td>
+
+            <td>
+                <input type="number" id="temperatura" step="0.1">
+            </td>
+
+            <td>
+                <button onclick="agregarTemperatura()">Agregar</button>
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td>Listado de temperaturas</td>
+
+            <td>
+                <textarea id="listaTemperaturas" rows="7"></textarea>
+            </td>
+
+            <td>
+                <button onclick="presentarTemperaturas()">Presentar</button>
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td>Promedio</td>
+
+            <td>
+                <input type="text" id="promedio" readonly>
+            </td>
+
+            <td>
+                <button onclick="calcularPromedio()">
+                    Calcular promedio
+                </button>
+            </td>
+        </tr>
+
+        
+        <tr>
+            <td>Días sobre el promedio</td>
+
+            <td colspan="2">
+                <textarea id="diasPromedio" rows="5"></textarea>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <script>
+
+        
+        let temperaturas = [];
+
+
+        
+        function agregarTemperatura() {
+
+            let temperatura = parseFloat(
+                document.getElementById("temperatura").value
+            );
+
+
+            if (temperaturas.length < 7) {
+
+                if (!isNaN(temperatura)) {
+
+                    
+                    temperaturas.push(temperatura);
+
+                    
+                    document.getElementById("temperatura").value = "";
+
+                    
+                    console.log("temperaturas:", temperaturas);
+
+                    alert(
+                        "Temperatura agregada. Día "
+                        + temperaturas.length
+                    );
+
+                } else {
+
+                    alert("Ingrese una temperatura válida.");
+
+                }
+
+            } else {
+
+                alert("Ya ingresó las temperaturas de los 7 días.");
+
+            }
+
+        }
+
+
+        
+        function presentarTemperaturas() {
+
+            let texto = "";
+
+
+    
+            for (let i = 0; i < temperaturas.length; i++) {
+
+                texto +=
+                    "Día " +
+                    (i + 1) +
+                    ": " +
+                    temperaturas[i] +
+                    " °C\n";
+
+            }
+
+
+            document.getElementById("listaTemperaturas").value = texto;
+
+
+            
+            console.log("temperaturas:", temperaturas);
+
+        }
+
+
+        
+        function calcularPromedio() {
+
+            if (temperaturas.length != 7) {
+
+                alert(
+                    "Debe ingresar las temperaturas de los 7 días."
+                );
+
+                return;
+            }
+
+
+            let suma = 0;
+
+
+            
+            for (let i = 0; i < temperaturas.length; i++) {
+
+                suma = suma + temperaturas[i];
+
+            }
+
+
+            
+            let promedio = suma / temperaturas.length;
+
+
+            
+            document.getElementById("promedio").value =
+                promedio.toFixed(2) + " °C";
+
+
+            
+            console.log("temperaturas:", temperaturas);
+            console.log("suma:", suma);
+            console.log("promedio:", promedio);
+
+
+            
+
+            let dias = "";
+
+
+            
+            for (let i = 0; i < temperaturas.length; i++) {
+
+                if (temperaturas[i] > promedio) {
+
+                    dias +=
+                        "Día " +
+                        (i + 1) +
+                        ": " +
+                        temperaturas[i] +
+                        " °C\n";
+
+                }
+
+            }
+
+
+            if (dias == "") {
+
+                dias = "Ningún día superó el promedio.";
+
+            }
+
+            
+            document.getElementById("diasPromedio").value = dias;
+
+
+            
+            console.log("Días sobre el promedio:", dias);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
